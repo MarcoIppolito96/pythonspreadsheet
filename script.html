@@ -1,0 +1,72 @@
+<style>
+    #tabla-datos table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    #tabla-datos th, #tabla-datos td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    #tabla-datos th {
+        background-color: rgb(51, 72, 98)!important;
+        color: white !important;
+        font-weight: bold;
+    }
+
+    #tabla-datos tr:nth-child(even) {
+        background-color: #f2f2f2 !important;
+    }
+
+    #tabla-datos tr:nth-child(odd) {
+        background-color: #d5e7f0 !important;
+    }
+
+    /* Agrega márgenes a los costados */
+    #tabla-datos {
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    #tabla-datos tr.encabezados {
+        color: white !important;
+        background-color: rgb(51, 72, 98)!important;
+    }
+</style>
+
+<div id="tabla-datos">
+    <table>
+        <thead>
+            <tr class="encabezados">
+                <th>Columna 1</th>
+                <th>Columna 2</th>
+                <!-- Agrega aquí los encabezados de las columnas -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los datos se generarán aquí dinámicamente con JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    fetch('https://pythonspreadsheets.s3.us-east-2.amazonaws.com/datos.json',{ mode: 'cors' })
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tabla-datos');
+            let tablaHTML = '<table>';
+            data.forEach((fila, index) => {
+                tablaHTML += '<tr' + (index === 0 ? ' class="encabezados"' : '') + '>';
+                fila.forEach(valor => {
+                    tablaHTML += '<td>' + valor + '</td>';
+                });
+                tablaHTML += '</tr>';
+            });
+            tablaHTML += '</table>';
+            tabla.innerHTML = tablaHTML;
+        })
+        .catch(error => console.error('Error:', error));
+</script>
